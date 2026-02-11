@@ -17,7 +17,7 @@ const Journal = () => {
 
     const addEntry = (e) => {
         e.preventDefault();
-        if (!newText) return;
+        // Allow mood-only entries
         const today = new Date().toISOString().split('T')[0];
         setEntries([{ date: today, mood: selectedMood, text: newText }, ...entries]);
         setNewText('');
@@ -54,6 +54,7 @@ const Journal = () => {
                         {['Great', 'Good', 'Okay', 'Bad'].map(m => (
                             <button
                                 key={m}
+                                type="button"
                                 onClick={() => setSelectedMood(m)}
                                 className={`p-2 rounded-full transition-all ${selectedMood === m ? 'bg-white/20 scale-110 shadow-lg ring-1 ring-white/50' : 'opacity-40 hover:opacity-100'}`}
                             >

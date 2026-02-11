@@ -12,12 +12,14 @@ import WeeklyPlanner from './components/WeeklyPlanner';
 import BookTracker from './components/BookTracker';
 import VisionBoard from './components/VisionBoard';
 import Journal from './components/Journal';
-import { Plus, LayoutGrid, Database, Calendar, BookOpen, Target, PenTool } from 'lucide-react';
+import MonthGrid from './components/MonthGrid';
+import CircularTracker from './components/CircularTracker';
+import { Plus, LayoutGrid, Database, Calendar, BookOpen, Target, PenTool, Grid3X3, CircleDashed } from 'lucide-react';
 
 const AppContent = () => {
   const { habits, energyLevel, mood, setMood, totalResilience } = useHabits();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('rituals'); // 'rituals', 'planner', 'vision', 'journal', 'library', 'problems'
+  const [activeTab, setActiveTab] = useState('rituals'); // 'rituals', 'tracker', 'spiral', 'planner', 'vision', 'journal', 'library', 'problems'
 
   // Dynamic Background based on Energy Level
   useEffect(() => {
@@ -96,6 +98,18 @@ const AppContent = () => {
             className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all whitespace-nowrap ${activeTab === 'rituals' ? 'bg-white/20 text-white shadow-lg' : 'text-white/40 hover:text-white/70'}`}
           >
             <LayoutGrid size={16} /> Rituals
+          </button>
+          <button
+            onClick={() => setActiveTab('tracker')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all whitespace-nowrap ${activeTab === 'tracker' ? 'bg-indigo-500/20 text-indigo-100 shadow-lg' : 'text-white/40 hover:text-white/70'}`}
+          >
+            <Grid3X3 size={16} /> Month
+          </button>
+          <button
+            onClick={() => setActiveTab('spiral')}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all whitespace-nowrap ${activeTab === 'spiral' ? 'bg-orange-500/20 text-orange-100 shadow-lg' : 'text-white/40 hover:text-white/70'}`}
+          >
+            <CircleDashed size={16} /> Spiral
           </button>
           <button
             onClick={() => setActiveTab('planner')}
@@ -184,6 +198,30 @@ const AppContent = () => {
                   ))}
                 </AnimatePresence>
               </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'tracker' && (
+            <motion.div
+              key="tracker"
+              initial={{ opacity: 0, scaling: 0.95 }}
+              animate={{ opacity: 1, scaling: 1 }}
+              exit={{ opacity: 0, scaling: 0.95 }}
+              className="w-full h-full"
+            >
+              <MonthGrid />
+            </motion.div>
+          )}
+
+          {activeTab === 'spiral' && (
+            <motion.div
+              key="spiral"
+              initial={{ opacity: 0, rotate: -5 }}
+              animate={{ opacity: 1, rotate: 0 }}
+              exit={{ opacity: 0, rotate: 5 }}
+              className="w-full h-full overflow-y-auto"
+            >
+              <CircularTracker />
             </motion.div>
           )}
 
