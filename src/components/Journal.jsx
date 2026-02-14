@@ -15,12 +15,34 @@ const Journal = () => {
     const [newText, setNewText] = useState('');
     const [selectedMood, setSelectedMood] = useState('Great');
 
+    // Typing Energy State
+    const [typingHeat, setTypingHeat] = useState(0);
+
+    // Heat decay effect
+    React.useEffect(() => {
+        const interval = setInterval(() => {
+            setTypingHeat(prev => Math.max(0, prev - 2)); // Cool down
+        }, 100);
+        return () => clearInterval(interval);
+    }, []);
+
+    const handleTyping = (e) => {
+        setNewText(e.target.value);
+        setTypingHeat(prev => Math.min(100, prev + 15)); // Heat up
+    };
+
+    // Calculate dynamic color based on heat (0 = Blue/Teal, 100 = Red/Orange)
+    // 180 (Cyan) -> 0 (Red)
+    const heatColor = `hsl(${180 - (typingHeat * 1.8)}, 100%, ${50 + (typingHeat * 0.1)}%)`;
+    const glowIntensity = typingHeat / 5; // 0 to 20px
+
     const addEntry = (e) => {
         e.preventDefault();
         // Allow mood-only entries
         const today = new Date().toISOString().split('T')[0];
         setEntries([{ date: today, mood: selectedMood, text: newText }, ...entries]);
         setNewText('');
+        setTypingHeat(0); // Reset heat on submit
     };
 
     const getMoodIcon = (mood) => {
@@ -44,8 +66,14 @@ const Journal = () => {
                 <PenTool className="text-emerald-400 opacity-50" size={24} />
             </div>
 
-            {/* Input Area */}
-            <div className="glass-panel p-6 mb-8 relative group">
+            {/* Input Area with Typing Energy Effect */}
+            <div
+                className="glass-panel p-6 mb-8 relative group transition-all duration-300"
+                style={{
+                    borderColor: typingHeat > 5 ? heatColor : undefined,
+                    boxShadow: typingHeat > 5 ? `0 0 ${glowIntensity}px ${heatColor}` : undefined
+                }}
+            >
                 <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl pointer-events-none" />
 
                 <div className="flex justify-between items-center mb-4">
@@ -67,13 +95,25 @@ const Journal = () => {
                 <form onSubmit={addEntry}>
                     <textarea
                         value={newText}
-                        onChange={e => setNewText(e.target.value)}
+                        onChange={handleTyping}
                         placeholder="What went well today? What did you learn?"
                         className="w-full bg-white/5 border border-white/10 rounded-xl p-4 min-h-[100px] text-sm focus:border-emerald-400/50 outline-none transition-colors mb-4 placeholder:text-white/20 resize-none"
+                        style={{
+                            color: typingHeat > 30 ? '#fff' : 'rgba(255,255,255,0.9)',
+                            // subtle text brightness increase with heat
+                        }}
                     />
-                    <button type="submit" className="w-full bg-emerald-500/20 py-2 rounded-lg text-emerald-200 text-sm font-bold border border-emerald-500/30 hover:bg-emerald-500/30 transition-all">
-                        Log Entry
-                    </button>
+                    <div className="flex justify-between items-center">
+                        <div className="h-1 w-32 bg-gray-700 rounded-full overflow-hidden">
+                            <div
+                                className="h-full transition-all duration-100"
+                                style={{ width: `${typingHeat}%`, backgroundColor: heatColor }}
+                            />
+                        </div>
+                        <button type="submit" className="bg-emerald-500/20 px-6 py-2 rounded-lg text-emerald-200 text-sm font-bold border border-emerald-500/30 hover:bg-emerald-500/30 transition-all">
+                            Log Entry
+                        </button>
+                    </div>
                 </form>
             </div>
 
