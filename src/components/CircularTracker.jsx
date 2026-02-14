@@ -251,7 +251,7 @@ const CircularTracker = () => {
                                                     'bg-stone-400': 'text-stone-400', 'bg-teal-300': 'text-teal-300',
                                                     'bg-orange-200': 'text-orange-200', 'bg-purple-300': 'text-purple-300',
                                                     'bg-amber-200': 'text-amber-200', 'bg-stone-500': 'text-stone-500',
-                                                    'bg-emerald-300': 'text-emerald-300', 'bg-orange-400': 'text-orange-400',
+                                                    'bg-emerald-300': 'text-emerald-300',
                                                     'bg-fuchsia-300': 'text-fuchsia-300', 'bg-cyan-400': 'text-cyan-400',
                                                     'bg-sky-400': 'text-sky-400', 'bg-teal-400': 'text-teal-400', 'bg-purple-400': 'text-purple-400',
                                                     'bg-red-500': 'text-red-500', 'bg-orange-400': 'text-orange-400', 'bg-yellow-400': 'text-yellow-400',
