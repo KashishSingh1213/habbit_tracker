@@ -138,43 +138,41 @@ const CircularTracker = () => {
         <div className="w-full flex flex-col xl:flex-row gap-8 p-4 text-slate-800">
 
             {/* LEFT SIDE: CIRCULAR TRACKER */}
-            <div className="flex-1 bg-white rounded-xl shadow-2xl p-6 relative overflow-hidden bg-[url('https://www.transparenttextures.com/patterns/notebook.png')]">
-                {/* Spiral Binding Visual */}
-                <div className="absolute top-0 left-0 w-full h-8 bg-gradient-to-b from-gray-300 to-white z-20 flex justify-between px-4 pb-2">
-                    {[...Array(20)].map((_, i) => (
-                        <div key={i} className="w-4 h-8 bg-gray-400 rounded-full border-2 border-gray-600 -mt-4 shadow-sm"></div>
-                    ))}
-                </div>
+            <div className="flex-1 glass-panel p-6 relative overflow-visible flex flex-col items-center justify-center min-h-[600px]">
+                {/* Background Glow */}
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-purple-500/10 pointer-events-none rounded-2xl" />
 
-                <div className="mt-8 flex flex-col items-center">
-                    <h2 className="text-5xl font-serif font-bold tracking-tight mb-2">HABIT TRACKER</h2>
+                <div className="flex flex-col items-center relative z-10 w-full">
+                    <h2 className="text-4xl font-serif font-bold tracking-tight mb-2 text-transparent bg-clip-text bg-gradient-to-r from-indigo-200 to-purple-200">
+                        Habit Cycles
+                    </h2>
 
-                    <div className="flex flex-col lg:flex-row items-center justify-center w-full relative">
+                    <div className="flex flex-col lg:flex-row items-center justify-center w-full relative mt-8">
 
                         {/* Habit Labels (Left side lines) */}
-                        <div className="hidden lg:flex flex-col justify-center items-end mr-4 space-y-1 text-right text-xs font-handwriting" style={{ width: '150px' }}>
+                        <div className="hidden lg:flex flex-col justify-center items-end mr-4 space-y-1 text-right text-xs font-handwriting h-[500px]" style={{ width: '150px' }}>
                             {habits.map((habit, index) => (
                                 <div key={habit.id} className="h-6 flex items-center justify-end w-full relative group">
-                                    <span className="mr-2 whitespace-nowrap overflow-visible" style={{ fontFamily: '"Dancing Script", cursive', fontSize: '1.1rem' }}>{habit.name}</span>
-                                    <div className="w-10 h-[1px] bg-gray-400"></div>
+                                    <span className="mr-2 whitespace-nowrap overflow-visible text-white/80 group-hover:text-white transition-colors" style={{ fontFamily: '"Dancing Script", cursive', fontSize: '1.2rem' }}>{habit.name}</span>
+                                    <div className={`w-12 h-[1px] ${habit.color ? habit.color.replace('bg-', 'bg-') : 'bg-gray-400'} opacity-50 group-hover:opacity-100 transition-opacity`}></div>
                                 </div>
                             ))}
                         </div>
 
                         {/* The SVG Chart */}
                         <div className="relative">
-                            <svg width="600" height="600" viewBox="0 0 600 600" className="transform -rotate-90">
+                            <svg width="600" height="600" viewBox="0 0 600 600" className="transform -rotate-90 drop-shadow-2xl">
                                 {/* CENTER INFO ORB ("Something New") */}
                                 {/* We rotate it back 90 deg so text is upright because the whole SVG is rotated -90 */}
                                 <g transform={`rotate(90, ${centerX}, ${centerY})`}>
-                                    <circle cx={centerX} cy={centerY} r={minRadius - 10} fill="#f8fafc" stroke="#e2e8f0" strokeWidth="2" />
-                                    <text x={centerX} y={centerY - 15} textAnchor="middle" className="text-xl font-bold font-serif fill-slate-700">
+                                    <circle cx={centerX} cy={centerY} r={minRadius - 10} fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.1)" strokeWidth="1" className="backdrop-blur-sm" />
+                                    <text x={centerX} y={centerY - 15} textAnchor="middle" className="text-xl font-bold font-serif fill-indigo-200/80">
                                         {format(currentDate, 'MMMM d')}
                                     </text>
-                                    <text x={centerX} y={centerY + 10} textAnchor="middle" className="text-4xl font-bold fill-indigo-500 font-handwriting">
+                                    <text x={centerX} y={centerY + 10} textAnchor="middle" className="text-5xl font-bold fill-white filter drop-shadow-lg font-handwriting">
                                         {completionPercentage}%
                                     </text>
-                                    <text x={centerX} y={centerY + 30} textAnchor="middle" className="text-[10px] uppercase tracking-widest fill-slate-400">
+                                    <text x={centerX} y={centerY + 30} textAnchor="middle" className="text-[10px] uppercase tracking-widest fill-white/40">
                                         DONE TODAY
                                     </text>
                                 </g>
@@ -194,7 +192,7 @@ const CircularTracker = () => {
                                                 y={pos.y}
                                                 textAnchor="middle"
                                                 dominantBaseline="middle"
-                                                className="text-[10px] font-bold fill-gray-800"
+                                                className="text-[10px] font-bold fill-white/50"
                                                 style={{ transformBox: 'fill-box', transformOrigin: 'center', transform: `rotate(${midA + 90}deg)` }}
                                             >
                                                 {i + 1}
@@ -202,20 +200,10 @@ const CircularTracker = () => {
                                             <path
                                                 d={describeArc(centerX, centerY, maxRadius + 10, startA, endA)}
                                                 fill="none"
-                                                stroke="#000"
+                                                stroke="rgba(255,255,255,0.1)"
                                                 strokeWidth="20"
-                                                className="opacity-90"
+                                                className="opacity-50"
                                             />
-                                            <text
-                                                x={pos.x}
-                                                y={pos.y}
-                                                textAnchor="middle"
-                                                dominantBaseline="middle"
-                                                className="text-[12px] font-bold fill-white"
-                                                style={{ transformBox: 'fill-box', transformOrigin: 'center', transform: `rotate(${90}deg)` }}
-                                            >
-                                                {i + 1}
-                                            </text>
                                         </g>
                                     );
                                 })}
@@ -225,7 +213,7 @@ const CircularTracker = () => {
                                     const angle = getAngle(i);
                                     const start = polarToCartesian(centerX, centerY, minRadius, angle);
                                     const end = polarToCartesian(centerX, centerY, maxRadius, angle);
-                                    return <line key={i} x1={start.x} y1={start.y} x2={end.x} y2={end.y} stroke="#ccc" strokeWidth="1" />;
+                                    return <line key={i} x1={start.x} y1={start.y} x2={end.x} y2={end.y} stroke="rgba(255,255,255,0.05)" strokeWidth="1" />;
                                 })}
 
                                 {/* Habits Rings */}
@@ -237,12 +225,12 @@ const CircularTracker = () => {
                                     const rInner = rOuter - ((maxRadius - minRadius) / habits.length);
 
                                     // Ring Path (background)
-                                    const ringPath = describeArc(centerX, centerY, (rOuter + rInner) / 2, 15, 315);
+                                    // const ringPath = describeArc(centerX, centerY, (rOuter + rInner) / 2, 15, 315);
 
                                     return (
                                         <g key={habit.id}>
                                             {/* Concentric Circle Lines */}
-                                            <path d={describeArc(centerX, centerY, rInner, 15, 315)} fill="none" stroke="#ccc" strokeWidth="1" />
+                                            <path d={describeArc(centerX, centerY, rInner, 0, 359.9)} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="1" />
 
                                             {Array.from({ length: 31 }).map((_, dIndex) => {
                                                 const day = dIndex + 1;
@@ -254,13 +242,9 @@ const CircularTracker = () => {
 
                                                 // Click target
                                                 // We need a thick stroke or a filled arc
-                                                const arcPath = describeArc(centerX, centerY, (rOuter + rInner) / 2, sa, ea);
+                                                // const arcPath = describeArc(centerX, centerY, (rOuter + rInner) / 2, sa, ea);
 
                                                 // Specific color for habit
-                                                // We need to resolve the tailwind color to hex or just use class logic if possible
-                                                // SVG doesn't support className for fill color dynamically easily if using tailwind classes without full config usage in svg.
-                                                // We can use 'fill="currentColor"' and set className on the path.
-
                                                 const colorMap = {
                                                     'bg-cyan-200': 'text-cyan-200', 'bg-orange-300': 'text-orange-300',
                                                     'bg-rose-300': 'text-rose-300', 'bg-yellow-200': 'text-yellow-200',
@@ -273,16 +257,17 @@ const CircularTracker = () => {
                                                     'bg-red-500': 'text-red-500', 'bg-orange-400': 'text-orange-400', 'bg-yellow-400': 'text-yellow-400',
                                                     'bg-green-400': 'text-green-400', 'bg-emerald-500': 'text-emerald-500', 'bg-blue-600': 'text-blue-600'
                                                 };
-                                                const txtColor = colorMap[habit.color] || 'text-gray-400';
+                                                const txtColor = colorMap[habit.color] || 'text-white';
 
                                                 return (
-                                                    <g key={day} onClick={() => handleToggle(habit.id, day)} className="cursor-pointer hover:opacity-80">
+                                                    <g key={day} onClick={() => handleToggle(habit.id, day)} className="cursor-pointer hover:opacity-100 opacity-90 transition-opacity">
                                                         <path
                                                             d={describeArc(centerX, centerY, (rOuter + rInner) / 2, sa + 0.5, ea - 0.5)}
                                                             fill="none"
                                                             stroke="currentColor"
-                                                            strokeWidth={(rOuter - rInner) - 2}
-                                                            className={`${isCompleted ? txtColor : 'text-transparent hover:text-gray-100'} transition-colors duration-200`}
+                                                            strokeWidth={(rOuter - rInner) - 3}
+                                                            className={`${isCompleted ? txtColor : 'text-white/5 hover:text-white/20'} transition-all duration-300`}
+                                                            strokeLinecap="round"
                                                         />
                                                     </g>
                                                 );
@@ -300,28 +285,30 @@ const CircularTracker = () => {
             <div className="w-full xl:w-96 flex flex-col gap-8">
 
                 {/* WEEKLY HABITS CARD */}
-                <div className="bg-white rounded-xl shadow-xl p-6 border border-gray-200 bg-[url('https://www.transparenttextures.com/patterns/notebook.png')]">
-                    <div className="border border-black mb-4">
-                        <div className="flex justify-between items-center p-2 border-b border-black bg-gray-100">
-                            <span className="font-bold text-xs">MONTH:</span>
-                            <span className="font-handwriting text-lg">{format(currentDate, 'MMMM')}</span>
+                <div className="glass-panel p-6">
+                    <div className="border border-white/20 rounded-lg overflow-hidden">
+                        <div className="flex justify-between items-center p-3 border-b border-white/10 bg-white/5">
+                            <span className="font-bold text-xs tracking-widest text-white/60">MONTH</span>
+                            <span className="font-handwriting text-xl text-white">{format(currentDate, 'MMMM')}</span>
                         </div>
-                        <div className="text-center font-bold border-b border-black py-1 bg-gray-50">WEEKLY HABITS</div>
+                        <div className="text-center font-bold border-b border-white/10 py-2 bg-white/5 text-xs tracking-widest text-white/80">WEEKLY GOALS</div>
 
                         {/* Table Header */}
-                        <div className="grid grid-cols-[3fr_1fr_1fr_1fr_1fr_1fr] text-center text-xs font-bold bg-black text-white py-1">
-                            <div className="text-left pl-2">HABIT</div>
+                        <div className="grid grid-cols-[3fr_1fr_1fr_1fr_1fr_1fr] text-center text-[10px] font-bold bg-white/10 text-white/70 py-2">
+                            <div className="text-left pl-3">TASK</div>
                             <div>W1</div><div>W2</div><div>W3</div><div>W4</div><div>W5</div>
                         </div>
 
                         {/* Rows */}
                         {weeklyHabits.map((h) => (
-                            <div key={h.id} className="grid grid-cols-[3fr_1fr_1fr_1fr_1fr_1fr] text-center border-b border-black/20 items-center h-8">
-                                <div className="text-left pl-2 font-handwriting text-lg leading-none pt-1 truncate">{h.name}</div>
+                            <div key={h.id} className="grid grid-cols-[3fr_1fr_1fr_1fr_1fr_1fr] text-center border-b border-white/10 items-center h-10 hover:bg-white/5 transition-colors">
+                                <div className="text-left pl-3 font-handwriting text-lg leading-none pt-1 truncate text-white/90">{h.name}</div>
                                 {['w1', 'w2', 'w3', 'w4', 'w5'].map(week => (
-                                    <div key={week} className="flex items-center justify-center cursor-pointer h-full border-l border-black/10" onClick={() => toggleWeeklyHabit(h.id, week)}>
-                                        {h.history[week] && (
-                                            <div className={`w-3 h-3 rounded-full ${h.color.replace('bg-', 'bg-')}`}></div>
+                                    <div key={week} className="flex items-center justify-center cursor-pointer h-full border-l border-white/5" onClick={() => toggleWeeklyHabit(h.id, week)}>
+                                        {h.history[week] ? (
+                                            <div className={`w-3 h-3 rounded-full ${h.color.replace('bg-', 'bg-')} shadow-[0_0_8px_rgba(255,255,255,0.5)]`}></div>
+                                        ) : (
+                                            <div className="w-1 h-1 rounded-full bg-white/10"></div>
                                         )}
                                     </div>
                                 ))}
@@ -331,25 +318,27 @@ const CircularTracker = () => {
                 </div>
 
                 {/* MONTHLY HABITS CARD */}
-                <div className="bg-white rounded-xl shadow-xl p-6 border border-gray-200 bg-[url('https://www.transparenttextures.com/patterns/notebook.png')]">
-                    <h3 className="text-center font-bold mb-4 uppercase tracking-widest border-b-2 border-black pb-2">Monthly Habits</h3>
+                <div className="glass-panel p-6 relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-bl from-purple-500/20 to-transparent rounded-bl-full pointer-events-none" />
+
+                    <h3 className="text-center font-bold mb-6 text-xs uppercase tracking-[0.2em] text-white/50 border-b border-white/10 pb-2">Monthly Targets</h3>
                     <div className="space-y-4">
                         {monthlyHabits.map(h => (
-                            <div key={h.id} className="flex items-center gap-3 group cursor-pointer" onClick={() => toggleMonthlyHabit(h.id)}>
-                                <div className={`w-6 h-6 border-2 border-gray-400 rounded flex items-center justify-center transition-colors ${h.completed ? h.color : 'bg-white'}`}>
-                                    {h.completed && <Check size={16} className="text-white" />}
+                            <div key={h.id} className="flex items-center gap-4 group cursor-pointer" onClick={() => toggleMonthlyHabit(h.id)}>
+                                <div className={`w-6 h-6 border border-white/30 rounded flex items-center justify-center transition-all ${h.completed ? `${h.color} border-transparent shadow-[0_0_10px_rgba(255,255,255,0.3)]` : 'bg-transparent group-hover:border-white/60'}`}>
+                                    {h.completed && <Check size={14} className="text-white" />}
                                 </div>
-                                <span className={`${h.completed ? 'line-through opacity-50' : ''} font-handwriting text-2xl`}>{h.name}</span>
+                                <span className={`${h.completed ? 'line-through opacity-40' : 'opacity-90'} font-handwriting text-xl text-white transition-all`}>{h.name}</span>
                             </div>
                         ))}
 
                         {/* Add New Monthly Habit Input */}
-                        <div className="flex items-center gap-3">
-                            <div className="w-6 h-6 border-2 border-gray-400 rounded border-dashed opacity-50"></div>
+                        <div className="flex items-center gap-4 mt-6 pt-4 border-t border-white/10 opacity-60 hover:opacity-100 transition-opacity">
+                            <Plus size={18} className="text-white/50" />
                             <input
                                 type="text"
-                                placeholder="Add new habit..."
-                                className="font-handwriting text-2xl bg-transparent border-b border-black w-full focus:outline-none placeholder-gray-400"
+                                placeholder="Add new target..."
+                                className="font-handwriting text-xl bg-transparent border-b border-white/20 w-full focus:outline-none placeholder-white/30 text-white focus:border-white/50 transition-colors pb-1"
                                 onKeyDown={(e) => {
                                     if (e.key === 'Enter' && e.target.value.trim()) {
                                         addMonthlyHabit(e.target.value.trim());
